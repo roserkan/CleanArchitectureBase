@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace Core.CrossCuttingConcers.Logging.Serilog;
+namespace Core.CrossCuttingConcerns.Logging.Serilog;
 
 public abstract class LoggerServiceBase
 {

@@ -1,4 +1,4 @@
-﻿namespace Core.CrossCuttingConcers.Exceptions;
+﻿namespace Core.CrossCuttingConcerns.Exceptions;
 
 public class NotFoundException : Exception
 {

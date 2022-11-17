@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Core.CrossCuttingConcers.Exceptions;
+namespace Core.CrossCuttingConcerns.Exceptions;
 
 public class ExceptionMiddleware
 {
