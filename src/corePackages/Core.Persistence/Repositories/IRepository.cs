@@ -7,7 +7,8 @@ namespace Core.Persistence.Repositories;
 public interface IRepository<T> : IQuery<T> where T : Entity
 {
     T Get(Expression<Func<T, bool>> predicate, 
-          Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+          Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+          bool enableTracking = true);
 
     List<T> GetAll(Expression<Func<T, bool>> predicate,
           Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,

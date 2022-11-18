@@ -16,7 +16,6 @@ public class Event : Entity
     public string Rules { get; set; }
     public Guid EventGroupId { get; set; }
     public virtual EventGroup EventGroup { get; set; }
-    public Guid PerformanceId { get; set; }
     public virtual Performance Performance { get; set; }
     public virtual ICollection<Ticket> Tickets { get; set; }
 }

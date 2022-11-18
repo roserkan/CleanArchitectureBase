@@ -18,15 +18,18 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
     }
 
     #region GetMethods
-    public TEntity Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    public TEntity Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool enableTracking = true)
     {
         var query = Context.Set<TEntity>().AsQueryable();
+        if (!enableTracking) query = query.AsNoTracking();
+        if (include != null)
         if (include != null) query = include(query);
         return query.FirstOrDefault(predicate);
     }
-    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool enableTracking = true)
     {
         var query = Context.Set<TEntity>().AsQueryable();
+        if (!enableTracking) query = query.AsNoTracking();
         if (include != null) query = include(query);
         return await query.FirstOrDefaultAsync(predicate);
     }
@@ -160,6 +163,7 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
     }
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
+        var x = Context.ChangeTracker.Entries();
         Context.Entry(entity).State = EntityState.Deleted;
         await Context.SaveChangesAsync();
         return entity;
