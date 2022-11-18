@@ -1,6 +1,6 @@
 ﻿namespace FastTicket.Application.Dtos.SubCategoryDtos;
 
-public class SubCategoryDto
+public class DeletedSubCategoryDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

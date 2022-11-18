@@ -6,4 +6,6 @@ public static class Messages
     public const string Category_Name_CannotDuplicate = "Category name already exists.";
     public const string Category_NotFound = "Category not found.";
 
+    //SubCategory Messages
+    public const string SubCategory_NotFound = "SubCategory not found.";
 }
