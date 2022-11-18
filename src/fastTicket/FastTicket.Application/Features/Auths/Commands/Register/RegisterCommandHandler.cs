@@ -6,7 +6,7 @@ using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Application.Services.AuthService;
 using MediatR;
 
-namespace FastTicket.Application.Features.Auths.Commands;
+namespace FastTicket.Application.Features.Auths.Commands.Register;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisteredDto>
 {

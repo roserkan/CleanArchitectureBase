@@ -8,6 +8,7 @@ using Core.ElasticSearch;
 using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FastTicket.Application.Services.AuthService;
+using FastTicket.Application.Services.UserService;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,7 @@ public static class ApplicationServiceRegistration
 
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
 
 
         services.AddSingleton<IMailService, MailKitMailService>();

@@ -2,7 +2,7 @@
 using FastTicket.Application.Dtos.AuthDtos;
 using MediatR;
 
-namespace FastTicket.Application.Features.Auths.Commands;
+namespace FastTicket.Application.Features.Auths.Commands.Register;
 
 public class RegisterCommand : IRequest<RegisteredDto>
 {

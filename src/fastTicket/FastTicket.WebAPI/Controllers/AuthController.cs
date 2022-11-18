@@ -1,7 +1,8 @@
 ﻿using Core.Security.Dtos;
 using Core.Security.Entities;
 using FastTicket.Application.Dtos.AuthDtos;
-using FastTicket.Application.Features.Auths.Commands;
+using FastTicket.Application.Features.Auths.Commands.Login;
+using FastTicket.Application.Features.Auths.Commands.Register;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,15 @@ public class AuthController : BaseController
         RegisteredDto result = await Mediator.Send(registerCommand);
         setRefreshTokenToCookie(result.RefreshToken);
         return Created("", result.AccessToken);
+    }
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForRegisterDto)
+    {
+        LoginCommand loginCommand = new() { UserForLoginDto = userForRegisterDto, IPAddress = getIpAddress() };
+        LoggedDto result = await Mediator.Send(loginCommand);
+        if (result.RefreshToken is not null) setRefreshTokenToCookie(result.RefreshToken);
+        return Ok(result.CreateResponseDto());
     }
 
 
