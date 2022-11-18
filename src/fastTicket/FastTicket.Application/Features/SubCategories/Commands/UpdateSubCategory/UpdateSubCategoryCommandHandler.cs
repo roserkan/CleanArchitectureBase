@@ -3,6 +3,7 @@ using Core.CrossCuttingConcerns.Exceptions;
 using FastTicket.Application.Constants;
 using FastTicket.Application.Dtos.SubCategoryDtos;
 using FastTicket.Application.Interfaces.Repositories;
+using FastTicket.Application.Services.CategoryService;
 using FastTicket.Domain.Entities;
 using MediatR;
 
@@ -11,13 +12,13 @@ namespace FastTicket.Application.Features.SubCategories.Commands.UpdateSubCatego
 public class UpdateSubCategoryCommandHandler : IRequestHandler<UpdateSubCategoryCommand, UpdatedSubCategoryDto>
 {
     private readonly ISubCategoryRepository _subCategoryRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryService _categoryService;
     private readonly IMapper _mapper;
 
-    public UpdateSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository, ICategoryRepository categoryRepository, IMapper mapper)
+    public UpdateSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository, ICategoryService categoryService, IMapper mapper)
     {
         _subCategoryRepository = subCategoryRepository;
-        _categoryRepository = categoryRepository;
+        _categoryService = categoryService;
         _mapper = mapper;
     }
 
@@ -40,7 +41,7 @@ public class UpdateSubCategoryCommandHandler : IRequestHandler<UpdateSubCategory
 
     private async Task MakeSureYouHaveACategory(Guid id)
     {
-        var result = await _categoryRepository.GetAsync(c => c.Id == id, enableTracking: false);
+        var result = await _categoryService.GetById(id);
         if (result is null) throw new BusinessException(Messages.Category_NotFound);
     }
 }
