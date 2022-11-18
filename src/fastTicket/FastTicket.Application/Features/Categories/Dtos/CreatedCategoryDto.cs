@@ -1,4 +1,4 @@
-﻿namespace FastTicket.Application.Dtos.CategoryDtos;
+﻿namespace FastTicket.Application.Features.Categories.Dtos;
 
 public class CreatedCategoryDto
 {

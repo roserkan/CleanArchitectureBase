@@ -1,7 +1,7 @@
 ﻿using Core.Persistence.Paging;
-using FastTicket.Application.Dtos.CategoryDtos;
+using FastTicket.Application.Features.Categories.Dtos;
 
-namespace FastTicket.Application.Models.CategoryModels;
+namespace FastTicket.Application.Features.Categories.Models;
 
 public class CategoryListModel : BasePageableModel
 {

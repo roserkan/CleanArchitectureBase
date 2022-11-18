@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
-using FastTicket.Application.Constants;
-using FastTicket.Application.Dtos.SubCategoryDtos;
+using FastTicket.Application.Features.SubCategories.Dtos;
+using FastTicket.Application.Features.SubCategories.Rules;
 using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Domain.Entities;
 using MediatR;
@@ -12,27 +11,23 @@ public class DeleteSubCategoryCommandHandler : IRequestHandler<DeleteSubCategory
 {
     private readonly ISubCategoryRepository _subCategoryRepository;
     private readonly IMapper _mapper;
+    private readonly SubCategoryBusinessRules _subCategoryBusinessRules;
 
-    public DeleteSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository, IMapper mapper)
+    public DeleteSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository, IMapper mapper, SubCategoryBusinessRules subCategoryBusinessRules)
     {
         _subCategoryRepository = subCategoryRepository;
         _mapper = mapper;
+        _subCategoryBusinessRules = subCategoryBusinessRules;
     }
 
     public async Task<DeletedSubCategoryDto> Handle(DeleteSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        await MakeSureYouHaveASubCategory(request.Id);
+        await _subCategoryBusinessRules.MakeSureYouHaveASubCategory(request.Id);
 
         var mappedSubCategory = _mapper.Map<SubCategory>(request);
         var deletedSubCategory = await _subCategoryRepository.DeleteAsync(mappedSubCategory);
         var deletedSubCategoryDto = _mapper.Map<DeletedSubCategoryDto>(deletedSubCategory);
         return deletedSubCategoryDto;
-    }
-
-    private async Task MakeSureYouHaveASubCategory(Guid id)
-    {
-        var result = await _subCategoryRepository.GetAsync(c => c.Id == id, enableTracking: false);
-        if (result is null) throw new BusinessException(Messages.SubCategory_NotFound);
     }
 }
 

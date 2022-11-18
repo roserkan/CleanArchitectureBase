@@ -1,7 +1,7 @@
 ﻿using Core.Security.Entities;
 using Core.Security.Hashing;
 using Core.Security.JWT;
-using FastTicket.Application.Dtos.AuthDtos;
+using FastTicket.Application.Features.Auths.Dtos;
 using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Application.Services.AuthService;
 using MediatR;

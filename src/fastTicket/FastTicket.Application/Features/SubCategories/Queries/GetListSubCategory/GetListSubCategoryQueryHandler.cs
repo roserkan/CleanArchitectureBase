@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using FastTicket.Application.Features.SubCategories.Models;
 using FastTicket.Application.Interfaces.Repositories;
-using FastTicket.Application.Models.SubCategoryModels;
 using MediatR;
 
 namespace FastTicket.Application.Features.SubCategories.Queries.GetListSubCategory;

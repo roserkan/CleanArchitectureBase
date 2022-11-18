@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
-using FastTicket.Application.Constants;
-using FastTicket.Application.Dtos.CategoryDtos;
+using FastTicket.Application.Features.Categories.Dtos;
+using FastTicket.Application.Features.Categories.Rules;
 using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Domain.Entities;
 using MediatR;
@@ -12,27 +11,23 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
+    private readonly CategoryBusinessRules _categoryBusinessRules;
 
-    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper)
+    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper, CategoryBusinessRules categoryBusinessRules)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
+        _categoryBusinessRules = categoryBusinessRules;
     }
 
     public async Task<DeletedCategoryDto> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        await MakeSureYouHaveACategory(request.Id);
+        await _categoryBusinessRules.MakeSureYouHaveACategory(request.Id);
 
         var mappedCategory = _mapper.Map<Category>(request);
         var deletedCategory = await _categoryRepository.DeleteAsync(mappedCategory);
         var deletedCategoryDto = _mapper.Map<DeletedCategoryDto>(deletedCategory);
         return deletedCategoryDto;
-    }
-
-    private async Task MakeSureYouHaveACategory(Guid id)
-    {
-        var result = await _categoryRepository.GetAsync(c => c.Id == id, enableTracking: false);
-        if (result is null) throw new BusinessException(Messages.Category_NotFound);
     }
 }
 

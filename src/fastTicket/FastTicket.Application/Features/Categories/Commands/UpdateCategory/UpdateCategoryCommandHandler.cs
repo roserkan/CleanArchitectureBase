@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
-using FastTicket.Application.Constants;
-using FastTicket.Application.Dtos.CategoryDtos;
 using FastTicket.Application.Features.Categories.Commands.Update;
+using FastTicket.Application.Features.Categories.Dtos;
+using FastTicket.Application.Features.Categories.Rules;
 using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Domain.Entities;
 using MediatR;
@@ -13,34 +12,24 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
+    private readonly CategoryBusinessRules _categoryBusinessRules;
 
-    public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper)
+    public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper, CategoryBusinessRules categoryBusinessRules)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
+        _categoryBusinessRules = categoryBusinessRules;
     }
 
     public async Task<UpdatedCategoryDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        await CategoryIdShouldExist(request.Id);
-        await CategoryNameCanNotBeDuplicatedWhenInserted(request.Name);
+        await _categoryBusinessRules.CategoryIdShouldExist(request.Id);
+        await _categoryBusinessRules.CategoryNameCanNotBeDuplicatedWhenInserted(request.Name);
 
         var mappedCategory = _mapper.Map<Category>(request);
         var updatedCategory = await _categoryRepository.UpdateAsync(mappedCategory);
         var updatedCategoryDto = _mapper.Map<UpdatedCategoryDto>(updatedCategory);
         return updatedCategoryDto;
-    }
-
-    private async Task CategoryNameCanNotBeDuplicatedWhenInserted(string name)
-    {
-        var result = await _categoryRepository.GetListAsync(b => b.Name == name);
-        if (result.Items.Any()) throw new BusinessException(Messages.Category_Name_CannotDuplicate);
-    }
-
-    private async Task CategoryIdShouldExist(Guid id)
-    {
-        var result = await _categoryRepository.GetAsync(b => b.Id == id, enableTracking: false);
-        if (result == null) throw new BusinessException(Messages.Category_NotFound);
     }
 }
   

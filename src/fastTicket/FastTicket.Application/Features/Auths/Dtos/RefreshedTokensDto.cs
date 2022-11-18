@@ -1,7 +1,7 @@
 ﻿using Core.Security.Entities;
 using Core.Security.JWT;
 
-namespace FastTicket.Application.Dtos.AuthDtos;
+namespace FastTicket.Application.Features.Auths.Dtos;
 
 public class RefreshedTokensDto
 {

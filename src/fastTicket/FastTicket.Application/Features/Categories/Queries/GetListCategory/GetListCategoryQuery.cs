@@ -1,5 +1,5 @@
 ﻿using Core.Application.Requests;
-using FastTicket.Application.Models.CategoryModels;
+using FastTicket.Application.Features.Categories.Models;
 using MediatR;
 
 namespace FastTicket.Application.Features.Categories.Queries.GetByIdCategory;

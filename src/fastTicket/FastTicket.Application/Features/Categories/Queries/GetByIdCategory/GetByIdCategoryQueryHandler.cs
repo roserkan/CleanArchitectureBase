@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
-using FastTicket.Application.Constants;
-using FastTicket.Application.Dtos.CategoryDtos;
+using FastTicket.Application.Features.Categories.Dtos;
+using FastTicket.Application.Features.Categories.Rules;
 using FastTicket.Application.Interfaces.Repositories;
 using MediatR;
 
@@ -11,24 +10,20 @@ public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery,
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
-    public GetByIdCategoryQueryHandler(ICategoryRepository categoryRepository, IMapper mapper)
+    private readonly CategoryBusinessRules _categoryBusinessRules;
+    public GetByIdCategoryQueryHandler(ICategoryRepository categoryRepository, IMapper mapper, CategoryBusinessRules categoryBusinessRules)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
+        _categoryBusinessRules = categoryBusinessRules;
     }
 
     public async Task<CategoryDto> Handle(GetByIdCategoryQuery request, CancellationToken cancellationToken)
     {
-        await CategoryIdShouldExist(request.Id);
+        await _categoryBusinessRules.CategoryIdShouldExist(request.Id);
 
         var category = await _categoryRepository.GetAsync(b => b.Id == request.Id);
         CategoryDto categoryDto = _mapper.Map<CategoryDto>(category);
         return categoryDto;
-    }
-
-    private async Task CategoryIdShouldExist(Guid id)
-    {
-        var result = await _categoryRepository.GetAsync(b => b.Id == id);
-        if (result == null) throw new BusinessException(Messages.Category_NotFound);
     }
 }

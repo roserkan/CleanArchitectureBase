@@ -1,4 +1,4 @@
-﻿using FastTicket.Application.Dtos.SubCategoryDtos;
+﻿using FastTicket.Application.Features.SubCategories.Dtos;
 using MediatR;
 
 namespace FastTicket.Application.Features.SubCategories.Commands.UpdateSubCategory;

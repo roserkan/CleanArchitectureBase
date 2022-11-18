@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using FastTicket.Application.Features.Categories.Models;
 using FastTicket.Application.Interfaces.Repositories;
-using FastTicket.Application.Models.CategoryModels;
 using MediatR;
 
 namespace FastTicket.Application.Features.Categories.Queries.GetByIdCategory;

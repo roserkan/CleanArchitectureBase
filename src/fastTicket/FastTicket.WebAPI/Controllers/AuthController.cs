@@ -1,8 +1,8 @@
 ﻿using Core.Security.Dtos;
 using Core.Security.Entities;
-using FastTicket.Application.Dtos.AuthDtos;
 using FastTicket.Application.Features.Auths.Commands.Login;
 using FastTicket.Application.Features.Auths.Commands.Register;
+using FastTicket.Application.Features.Auths.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
 ﻿using Core.Security.Dtos;
-using FastTicket.Application.Dtos.AuthDtos;
+using FastTicket.Application.Features.Auths.Dtos;
 using MediatR;
 
 namespace FastTicket.Application.Features.Auths.Commands.Register;

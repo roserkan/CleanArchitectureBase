@@ -1,10 +1,9 @@
 ﻿using Core.Persistence.Paging;
-using FastTicket.Application.Dtos.SubCategoryDtos;
+using FastTicket.Application.Features.SubCategories.Dtos;
 
-namespace FastTicket.Application.Models.SubCategoryModels;
+namespace FastTicket.Application.Features.SubCategories.Models;
 
 public class SubCategoryListModel : BasePageableModel
 {
     public IList<SubCategoryDto> Items { get; set; }
 }
-

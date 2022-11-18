@@ -1,4 +1,4 @@
-﻿using FastTicket.Application.Dtos.CategoryDtos;
+﻿using FastTicket.Application.Features.Categories.Dtos;
 using MediatR;
 
 namespace FastTicket.Application.Features.Categories.Commands.Delete;

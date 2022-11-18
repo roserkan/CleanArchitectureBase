@@ -2,7 +2,7 @@
 using Core.Security.Enums;
 using Core.Security.JWT;
 
-namespace FastTicket.Application.Dtos.AuthDtos;
+namespace FastTicket.Application.Features.Auths.Dtos;
 
 public class LoggedDto : RefreshedTokensDto
 {

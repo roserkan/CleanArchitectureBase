@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
-using FastTicket.Application.Constants;
-using FastTicket.Application.Dtos.SubCategoryDtos;
+using FastTicket.Application.Features.SubCategories.Dtos;
+using FastTicket.Application.Features.SubCategories.Rules;
 using FastTicket.Application.Interfaces.Repositories;
-using FastTicket.Application.Services.CategoryService;
 using FastTicket.Domain.Entities;
 using MediatR;
 
@@ -11,30 +9,24 @@ namespace FastTicket.Application.Features.SubCategories.Commands.CreateSubSubCat
 
 public class CreateSubCategoryCommandHandler : IRequestHandler<CreateSubCategoryCommand, CreatedSubCategoryDto>
 {
-    private readonly ISubCategoryRepository _subcategoryRepository;
-    private readonly ICategoryService _categoryService;
+    private readonly ISubCategoryRepository _subCategoryRepository;
     private readonly IMapper _mapper;
+    private readonly SubCategoryBusinessRules _subCategoryBusinessRules;
 
-    public CreateSubCategoryCommandHandler(ISubCategoryRepository subcategoryRepository, ICategoryService categoryService, IMapper mapper)
+    public CreateSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository, IMapper mapper, SubCategoryBusinessRules subCategoryBusinessRules)
     {
-        _subcategoryRepository = subcategoryRepository;
-        _categoryService = categoryService;
+        _subCategoryRepository = subCategoryRepository;
         _mapper = mapper;
+        _subCategoryBusinessRules = subCategoryBusinessRules;
     }
 
     public async Task<CreatedSubCategoryDto> Handle(CreateSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        await MakeSureYouHaveACategory(request.CategoryId);
+        await _subCategoryBusinessRules.MakeSureYouHaveACategory(request.CategoryId);
         var mappedSubCategory = _mapper.Map<SubCategory>(request);
-        var createdSubCategory = await _subcategoryRepository.AddAsync(mappedSubCategory);
+        var createdSubCategory = await _subCategoryRepository.AddAsync(mappedSubCategory);
         var createdSubCategoryDto = _mapper.Map<CreatedSubCategoryDto>(createdSubCategory);
         return createdSubCategoryDto;
-    }
-
-    private async Task MakeSureYouHaveACategory(Guid id)
-    {
-        var result = await _categoryService.GetById(id);
-        if (result is null) throw new BusinessException(Messages.Category_NotFound);
     }
 }
 

@@ -1,6 +1,6 @@
-﻿using FastTicket.Application.Dtos.SubCategoryDtos;
+﻿using FastTicket.Application.Features.SubCategories.Dtos;
 
-namespace FastTicket.Application.Dtos.CategoryDtos;
+namespace FastTicket.Application.Features.Categories.Dtos;
 
 public class CategoryDto
 {
