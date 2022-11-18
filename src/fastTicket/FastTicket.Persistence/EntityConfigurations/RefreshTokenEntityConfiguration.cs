@@ -11,7 +11,7 @@ public class RefreshTokenEntityConfiguration : EntityConfiguration<RefreshToken>
     {
         base.Configure(builder);
 
-        builder.ToTable("RefreshToken", FastTicketDbContext.DEFAULT_SCHEMA);
+        builder.ToTable("RefreshTokens", FastTicketDbContext.DEFAULT_SCHEMA);
 
         builder.HasOne(i => i.User);
     }

@@ -11,7 +11,7 @@ public class OtpAuthenticatorEntityConfiguration : EntityConfiguration<OtpAuthen
     {
         base.Configure(builder);
 
-        builder.ToTable("OtpAuthenticator", FastTicketDbContext.DEFAULT_SCHEMA);
+        builder.ToTable("OtpAuthenticators", FastTicketDbContext.DEFAULT_SCHEMA);
 
         builder.HasOne(i => i.User);
     }

@@ -59,7 +59,7 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OperationClaim",
+                name: "OperationClaims",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -68,7 +68,7 @@ namespace FastTicket.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationClaim", x => x.Id);
+                    table.PrimaryKey("PK_OperationClaims", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,20 +137,20 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OtpAuthenticator",
+                name: "EmailAuthenticators",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OtpAuthenticator", x => x.Id);
+                    table.PrimaryKey("PK_EmailAuthenticators", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OtpAuthenticator_Users_UserId",
+                        name: "FK_EmailAuthenticators_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "dbo",
                         principalTable: "Users",
@@ -165,7 +165,7 @@ namespace FastTicket.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -181,7 +181,7 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshToken",
+                name: "RefreshTokens",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -198,9 +198,9 @@ namespace FastTicket.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_Users_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "dbo",
                         principalTable: "Users",
@@ -215,17 +215,16 @@ namespace FastTicket.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OperationClaimId = table.Column<int>(type: "int", nullable: false),
-                    OperationClaimId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OperationClaimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserOperationClaims_OperationClaim_OperationClaimId1",
-                        column: x => x.OperationClaimId1,
+                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
+                        column: x => x.OperationClaimId,
                         principalSchema: "dbo",
-                        principalTable: "OperationClaim",
+                        principalTable: "OperationClaims",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -335,6 +334,12 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmailAuthenticators_UserId",
+                schema: "dbo",
+                table: "EmailAuthenticators",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_EventGroupId",
                 schema: "dbo",
                 table: "Events",
@@ -345,12 +350,6 @@ namespace FastTicket.Persistence.Migrations
                 schema: "dbo",
                 table: "Events",
                 column: "VenueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OtpAuthenticator_UserId",
-                schema: "dbo",
-                table: "OtpAuthenticator",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OtpAuthenticators_UserId",
@@ -366,9 +365,9 @@ namespace FastTicket.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UserId",
+                name: "IX_RefreshTokens_UserId",
                 schema: "dbo",
-                table: "RefreshToken",
+                table: "RefreshTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -390,10 +389,10 @@ namespace FastTicket.Persistence.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperationClaims_OperationClaimId1",
+                name: "IX_UserOperationClaims_OperationClaimId",
                 schema: "dbo",
                 table: "UserOperationClaims",
-                column: "OperationClaimId1");
+                column: "OperationClaimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_UserId",
@@ -410,7 +409,7 @@ namespace FastTicket.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OtpAuthenticator",
+                name: "EmailAuthenticators",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -422,7 +421,7 @@ namespace FastTicket.Persistence.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "RefreshToken",
+                name: "RefreshTokens",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -446,7 +445,7 @@ namespace FastTicket.Persistence.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "OperationClaim",
+                name: "OperationClaims",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

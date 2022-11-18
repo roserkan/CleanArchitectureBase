@@ -11,7 +11,7 @@ public class EmailAuthenticatorEntityConfiguration : EntityConfiguration<EmailAu
     {
         base.Configure(builder);
 
-        builder.ToTable("OtpAuthenticators", FastTicketDbContext.DEFAULT_SCHEMA);
+        builder.ToTable("EmailAuthenticators", FastTicketDbContext.DEFAULT_SCHEMA);
 
         builder.HasOne(e => e.User);
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastTicket.Persistence.Migrations
 {
     [DbContext(typeof(FastTicketDbContext))]
-    [Migration("20221117193704_mig_1")]
+    [Migration("20221118135247_mig_1")]
     partial class mig_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OtpAuthenticators", "dbo");
+                    b.ToTable("EmailAuthenticators", "dbo");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
@@ -58,7 +58,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OperationClaim", "dbo");
+                    b.ToTable("OperationClaims", "dbo");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OtpAuthenticator", b =>
@@ -81,7 +81,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OtpAuthenticator", "dbo");
+                    b.ToTable("OtpAuthenticators", "dbo");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.RefreshToken", b =>
@@ -123,7 +123,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken", "dbo");
+                    b.ToTable("RefreshTokens", "dbo");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.User", b =>
@@ -169,10 +169,7 @@ namespace FastTicket.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("OperationClaimId1")
+                    b.Property<Guid>("OperationClaimId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -180,7 +177,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OperationClaimId1");
+                    b.HasIndex("OperationClaimId");
 
                     b.HasIndex("UserId");
 
@@ -459,7 +456,7 @@ namespace FastTicket.Persistence.Migrations
                 {
                     b.HasOne("Core.Security.Entities.OperationClaim", "OperationClaim")
                         .WithMany()
-                        .HasForeignKey("OperationClaimId1")
+                        .HasForeignKey("OperationClaimId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

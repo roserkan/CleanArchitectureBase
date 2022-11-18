@@ -7,6 +7,7 @@ using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
 using Core.ElasticSearch;
 using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
+using FastTicket.Application.Services.AuthService;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,10 @@ public static class ApplicationServiceRegistration
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
+
+        services.AddScoped<IAuthService, AuthService>();
+
 
         services.AddSingleton<IMailService, MailKitMailService>();
         services.AddSingleton<LoggerServiceBase, FileLogger>();

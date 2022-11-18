@@ -11,7 +11,7 @@ public class OperationClaimEntityConfiguration : EntityConfiguration<OperationCl
     {
         base.Configure(builder);
 
-        builder.ToTable("OperationClaim", FastTicketDbContext.DEFAULT_SCHEMA);
+        builder.ToTable("OperationClaims", FastTicketDbContext.DEFAULT_SCHEMA);
     }
 }
 
