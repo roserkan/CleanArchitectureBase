@@ -41,7 +41,6 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         };
 
         _loggerServiceBase.Info(JsonConvert.SerializeObject(logDetail));
-
         return next();
     }
 }

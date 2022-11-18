@@ -3,6 +3,7 @@ using Core.Security.Entities;
 using Core.Security.Enums;
 using Core.Security.JWT;
 using FastTicket.Application.Features.Auths.Dtos;
+using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Services.AuthService;
 using FastTicket.Application.Services.UserService;
 using MediatR;
@@ -20,16 +21,20 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoggedDto>
 {
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
+    private readonly AuthBusinessRules _authBusinessRules;
 
-    public LoginCommandHandler(IUserService userService, IAuthService authService)
+    public LoginCommandHandler(IUserService userService, IAuthService authService, AuthBusinessRules authBusinessRules)
     {
         _userService = userService;
         _authService = authService;
+        _authBusinessRules = authBusinessRules;
     }
 
     public async Task<LoggedDto> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         User? user = await _userService.GetByEmail(request.UserForLoginDto.Email);
+        await _authBusinessRules.UserShouldBeExists(user);
+        await _authBusinessRules.UserPasswordShouldBeMatch(user.Id, request.UserForLoginDto.Password);
 
         LoggedDto loggedDto = new();
 

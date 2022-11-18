@@ -2,6 +2,7 @@
 using Core.Security.Hashing;
 using Core.Security.JWT;
 using FastTicket.Application.Features.Auths.Dtos;
+using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Interfaces.Repositories;
 using FastTicket.Application.Services.AuthService;
 using MediatR;
@@ -12,6 +13,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Registere
 {
     private readonly IUserRepository _userRepository;
     private readonly IAuthService _authService;
+    private readonly AuthBusinessRules _authBusinessRules;
+
+    public RegisterCommandHandler(AuthBusinessRules authBusinessRules)
+    {
+        _authBusinessRules = authBusinessRules;
+    }
 
     public RegisterCommandHandler(IUserRepository userRepository, IAuthService authService)
     {
@@ -21,6 +28,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Registere
 
     public async Task<RegisteredDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
+        await _authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
+
         byte[] passwordHash, passwordSalt;
         HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out passwordHash, out passwordSalt);
         User newUser = new()
