@@ -1,8 +1,8 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security.Entities;
 using Core.Security.Hashing;
-using FastTicket.Application.Features.Auths.Constants;
 using FastTicket.Application.Interfaces.Repositories;
+using static FastTicket.Application.Features.Auths.Constants.Messages;
 
 namespace FastTicket.Application.Features.Auths.Rules;
 
@@ -18,12 +18,12 @@ public class AuthBusinessRules
     public async Task UserEmailShouldBeNotExists(string email)
     {
         User? user = await _userRepository.GetAsync(u => u.Email == email);
-        if (user != null) throw new BusinessException(AuthMessages.Auth_Email_CannotDuplicate);
+        if (user != null) throw new BusinessException(Auth_Email_CannotDuplicate);
     }
 
     public Task UserShouldBeExists(User? user)
     {
-        if (user == null) throw new BusinessException(AuthMessages.Auth_NotFound);
+        if (user == null) throw new BusinessException(Auth_NotFound);
         return Task.CompletedTask;
     }
 
@@ -31,6 +31,6 @@ public class AuthBusinessRules
     {
         User? user = await _userRepository.GetAsync(u => u.Id == id);
         if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            throw new BusinessException("Password don't match.");
+            throw new BusinessException(Auth_Password_NotMatch);
     }
 }

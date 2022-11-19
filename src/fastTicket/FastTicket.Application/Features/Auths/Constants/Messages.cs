@@ -1,6 +1,6 @@
 ﻿namespace FastTicket.Application.Features.Auths.Constants;
 
-public static class AuthMessages
+public static class Messages
 {
     public const string Auth_Email_CannotDuplicate = "E-mail already exists.";
     public const string Auth_NotFound = "User not found.";
