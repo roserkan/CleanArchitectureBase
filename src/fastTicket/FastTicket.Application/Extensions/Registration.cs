@@ -9,9 +9,14 @@ using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Features.Categories.Rules;
+using FastTicket.Application.Features.OperationClaims.Rules;
 using FastTicket.Application.Features.SubCategories.Rules;
+using FastTicket.Application.Features.UserOperationClaims.Rules;
+using FastTicket.Application.Features.Users.Rules;
+using FastTicket.Application.Features.Venues.Rules;
 using FastTicket.Application.Services.AuthService;
 using FastTicket.Application.Services.CategoryService;
+using FastTicket.Application.Services.CityService;
 using FastTicket.Application.Services.UserService;
 using FluentValidation;
 using MediatR;
@@ -30,6 +35,10 @@ public static class ApplicationServiceRegistration
         services.AddScoped<CategoryBusinessRules>();
         services.AddScoped<SubCategoryBusinessRules>();
         services.AddScoped<AuthBusinessRules>();
+        services.AddScoped<UserBusinessRules>();
+        services.AddScoped<OperationClaimBusinessRules>();
+        services.AddScoped<UserOperationClaimBusinessRules>();
+        services.AddScoped<VenueBusinessRules>();
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -44,6 +53,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICityService, CityService>();
 
 
         services.AddSingleton<IMailService, MailKitMailService>();

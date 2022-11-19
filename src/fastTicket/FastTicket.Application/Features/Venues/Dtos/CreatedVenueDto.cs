@@ -1,22 +1,13 @@
-﻿using Core.Persistence.Repositories;
+﻿namespace FastTicket.Application.Features.Venues.Dtos;
 
-namespace FastTicket.Domain.Entities;
-
-public class Venue : Entity
+public class CreatedVenueDto
 {
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string LogoImagePath { get; set; }
     public string VenueImagePath { get; set; }
     public string SeatingArrangementImagePath { get; set; }
     public string Address { get; set; }
     public string Description { get; set; }
-    public virtual ICollection<Event> Events { get; set; }
     public Guid CityId { get; set; }
-    public City City { get; set; }
 }
-
-
-
-
-
-

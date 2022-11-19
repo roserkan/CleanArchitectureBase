@@ -31,6 +31,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<ITicketRepository, TicketRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IVenueRepository, VenueRepository>();
 
         return services;
     }
