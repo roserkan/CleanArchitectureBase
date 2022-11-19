@@ -7,6 +7,7 @@ using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
 using Core.ElasticSearch;
 using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
+using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Features.Categories.Rules;
 using FastTicket.Application.Features.SubCategories.Rules;
 using FastTicket.Application.Services.AuthService;
@@ -28,9 +29,11 @@ public static class ApplicationServiceRegistration
 
         services.AddScoped<CategoryBusinessRules>();
         services.AddScoped<SubCategoryBusinessRules>();
+        services.AddScoped<AuthBusinessRules>();
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));

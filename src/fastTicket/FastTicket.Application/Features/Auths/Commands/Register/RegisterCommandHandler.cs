@@ -15,15 +15,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Registere
     private readonly IAuthService _authService;
     private readonly AuthBusinessRules _authBusinessRules;
 
-    public RegisterCommandHandler(AuthBusinessRules authBusinessRules)
-    {
-        _authBusinessRules = authBusinessRules;
-    }
-
-    public RegisterCommandHandler(IUserRepository userRepository, IAuthService authService)
+    public RegisterCommandHandler(IUserRepository userRepository, IAuthService authService, AuthBusinessRules authBusinessRules)
     {
         _userRepository = userRepository;
         _authService = authService;
+        _authBusinessRules = authBusinessRules;
     }
 
     public async Task<RegisteredDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
