@@ -24,4 +24,8 @@
     <ProjectReference Include="..\FastTicket.Domain\FastTicket.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\UserOperationClaims\Mapping\" />
+  </ItemGroup>
+
 </Project>
