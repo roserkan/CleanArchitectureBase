@@ -14,6 +14,7 @@ using FastTicket.Application.Features.Events.Rules;
 using FastTicket.Application.Features.OperationClaims.Rules;
 using FastTicket.Application.Features.Performances.Rules;
 using FastTicket.Application.Features.SubCategories.Rules;
+using FastTicket.Application.Features.Tickets.Rules;
 using FastTicket.Application.Features.UserOperationClaims.Rules;
 using FastTicket.Application.Features.Users.Rules;
 using FastTicket.Application.Features.Venues.Rules;
@@ -48,6 +49,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<EventBusinessRules>();
         services.AddScoped<EventGroupBusinessRules>();
         services.AddScoped<PerformanceBusinessRules>();
+        services.AddScoped<TicketBusinessRules>();
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
