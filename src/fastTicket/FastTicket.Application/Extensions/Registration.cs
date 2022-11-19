@@ -9,8 +9,10 @@ using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Features.Categories.Rules;
+using FastTicket.Application.Features.EventGroups.Rules;
 using FastTicket.Application.Features.Events.Rules;
 using FastTicket.Application.Features.OperationClaims.Rules;
+using FastTicket.Application.Features.Performances.Rules;
 using FastTicket.Application.Features.SubCategories.Rules;
 using FastTicket.Application.Features.UserOperationClaims.Rules;
 using FastTicket.Application.Features.Users.Rules;
@@ -19,6 +21,7 @@ using FastTicket.Application.Services.AuthService;
 using FastTicket.Application.Services.CategoryService;
 using FastTicket.Application.Services.CityService;
 using FastTicket.Application.Services.EventGroupService;
+using FastTicket.Application.Services.EventService;
 using FastTicket.Application.Services.UserService;
 using FastTicket.Application.Services.VenueService;
 using FluentValidation;
@@ -43,6 +46,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<UserOperationClaimBusinessRules>();
         services.AddScoped<VenueBusinessRules>();
         services.AddScoped<EventBusinessRules>();
+        services.AddScoped<EventGroupBusinessRules>();
+        services.AddScoped<PerformanceBusinessRules>();
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -60,6 +65,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<ICityService, CityService>();
         services.AddScoped<IVenueService, VenueService>();
         services.AddScoped<IEventGroupService, EventGroupService>();
+        services.AddScoped<IEventService, EventService>();
 
 
         services.AddSingleton<IMailService, MailKitMailService>();
