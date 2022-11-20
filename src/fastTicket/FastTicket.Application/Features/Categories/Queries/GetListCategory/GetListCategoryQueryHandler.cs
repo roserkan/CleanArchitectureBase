@@ -2,6 +2,7 @@
 using FastTicket.Application.Features.Categories.Models;
 using FastTicket.Application.Interfaces.Repositories;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastTicket.Application.Features.Categories.Queries.GetByIdCategory;
 
@@ -19,7 +20,8 @@ public class GetListCategoryQueryHandler : IRequestHandler<GetListCategoryQuery,
     public async Task<CategoryListModel> Handle(GetListCategoryQuery request, CancellationToken cancellationToken)
     {
         var categories = await _categoryRepository.GetListAsync(index: request.PageRequest.Page,
-                                                                size: request.PageRequest.PageSize);
+                                                                size: request.PageRequest.PageSize,
+                                                                include: i => i.Include(i => i.SubCategories));
 
         var mappedCategoryListModel = _mapper.Map<CategoryListModel>(categories);
 

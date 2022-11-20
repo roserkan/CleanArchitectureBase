@@ -6,7 +6,7 @@ using MediatR;
 
 namespace FastTicket.Application.Features.Categories.Queries.GetByIdCategory;
 
-public class GetListCategoryQuery : IRequest<CategoryListModel>, ICachableRequest
+public class GetListCategoryQuery : IRequest<CategoryListModel>
 {
     public PageRequest PageRequest { get; set; }
 
