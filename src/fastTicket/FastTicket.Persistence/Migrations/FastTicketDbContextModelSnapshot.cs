@@ -222,6 +222,9 @@ namespace FastTicket.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -229,7 +232,7 @@ namespace FastTicket.Persistence.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EventGroupId")
+                    b.Property<Guid?>("EventGroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImagePath")
@@ -255,6 +258,8 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("EventGroupId");
 
                     b.HasIndex("VenueId");
@@ -266,6 +271,9 @@ namespace FastTicket.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -294,6 +302,8 @@ namespace FastTicket.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("EventGroups", "dbo");
                 });
@@ -414,7 +424,7 @@ namespace FastTicket.Persistence.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Venue");
+                    b.ToTable("Venues");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.EmailAuthenticator", b =>
@@ -471,10 +481,16 @@ namespace FastTicket.Persistence.Migrations
 
             modelBuilder.Entity("FastTicket.Domain.Entities.Event", b =>
                 {
+                    b.HasOne("FastTicket.Domain.Entities.Category", "Category")
+                        .WithMany("Events")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FastTicket.Domain.Entities.EventGroup", "EventGroup")
                         .WithMany("Events")
                         .HasForeignKey("EventGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("FastTicket.Domain.Entities.Venue", "Venue")
@@ -483,9 +499,22 @@ namespace FastTicket.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Category");
+
                     b.Navigation("EventGroup");
 
                     b.Navigation("Venue");
+                });
+
+            modelBuilder.Entity("FastTicket.Domain.Entities.EventGroup", b =>
+                {
+                    b.HasOne("FastTicket.Domain.Entities.Category", "Category")
+                        .WithMany("EventGroups")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("FastTicket.Domain.Entities.Performance", b =>
@@ -552,6 +581,10 @@ namespace FastTicket.Persistence.Migrations
 
             modelBuilder.Entity("FastTicket.Domain.Entities.Category", b =>
                 {
+                    b.Navigation("EventGroups");
+
+                    b.Navigation("Events");
+
                     b.Navigation("SubCategories");
                 });
 

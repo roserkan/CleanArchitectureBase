@@ -14,5 +14,7 @@ public class CategoryEntityConfiguration : EntityConfiguration<Category>
         builder.ToTable("Categories", FastTicketDbContext.DEFAULT_SCHEMA);
 
         builder.HasMany(i => i.SubCategories);
+        builder.HasMany(i => i.Events);
+        builder.HasMany(i => i.EventGroups);
     }
 }

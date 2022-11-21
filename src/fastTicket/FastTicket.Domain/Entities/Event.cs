@@ -14,8 +14,10 @@ public class Event : Entity
     public string ImagePath { get; set; }
     public string Description { get; set; }
     public string Rules { get; set; }
-    public Guid EventGroupId { get; set; }
+    public Guid? EventGroupId { get; set; }
     public virtual EventGroup EventGroup { get; set; }
+    public Guid CategoryId { get; set; }
+    public virtual Category Category { get; set; }
     public virtual Performance Performance { get; set; }
     public virtual ICollection<Ticket> Tickets { get; set; }
 }

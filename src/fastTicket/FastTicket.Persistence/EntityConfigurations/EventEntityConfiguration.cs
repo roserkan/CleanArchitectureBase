@@ -12,10 +12,13 @@ public class EventEntityConfiguration : EntityConfiguration<Event>
         base.Configure(builder);
 
         builder.ToTable("Events", FastTicketDbContext.DEFAULT_SCHEMA);
+        builder.Property(i => i.EventGroupId).IsRequired(false);
+
 
         builder.HasOne(i => i.Venue);
-        builder.HasOne(i => i.EventGroup);
+        builder.HasOne(i => i.EventGroup).WithMany(i => i.Events).OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(i => i.Performance);
         builder.HasMany(i => i.Tickets);
+        builder.HasOne(i => i.Category);
     }
 }

@@ -15,6 +15,13 @@ public static class PersistenceServiceRegistration
         services.AddDbContext<FastTicketDbContext>(options =>
                                                  options.UseSqlServer(
                                                      configuration.GetConnectionString("FastTicketConnectionString")));
+
+
+
+        //var seedData = new SeedData();
+        //seedData.SeedAsync(configuration).GetAwaiter().GetResult();
+
+
         services.AddStackExchangeRedisCache(options => options.Configuration = configuration["CacheSettings:ConnectOption"]);
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();

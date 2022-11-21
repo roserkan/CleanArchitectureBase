@@ -24,6 +24,7 @@ public class FastTicketDbContext : DbContext
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Venue> Venues { get; set; }
 
     public FastTicketDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
     {

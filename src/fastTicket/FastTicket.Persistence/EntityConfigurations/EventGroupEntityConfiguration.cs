@@ -13,6 +13,7 @@ public class EventGroupEntityConfiguration : EntityConfiguration<EventGroup>
 
         builder.ToTable("EventGroups", FastTicketDbContext.DEFAULT_SCHEMA);
 
-        builder.HasMany(i => i.Events);
+        builder.HasMany(i => i.Events).WithOne(i => i.EventGroup).OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(i => i.Category);
     }
 }

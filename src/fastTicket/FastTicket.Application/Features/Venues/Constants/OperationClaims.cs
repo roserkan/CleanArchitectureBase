@@ -1,9 +1,9 @@
-﻿namespace FastTicket.Application.Features.Venues.Constants;
+﻿namespace FastTicket.Application.Features.Cities.Constants;
 
 
 public static class OperationClaims
 {
-    public const string VenueAdd = "venue.add";
-    public const string VenueUpdate = "venue.update";
-    public const string VenueDelete = "venue.delete";
+    public const string CityAdd = "city.add";
+    public const string CityUpdate = "city.update";
+    public const string CityDelete = "city.delete";
 }

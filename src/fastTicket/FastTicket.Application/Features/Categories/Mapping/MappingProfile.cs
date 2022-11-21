@@ -15,7 +15,7 @@ public class MappingProfile : Profile
     {
         //Categories
         CreateMap<Category, CategoryDto>()
-            .ForMember(i => i.SubCategoryDto, opt => opt.MapFrom(i => i.SubCategories))
+            .ForMember(i => i.SubCategories, opt => opt.MapFrom(i => i.SubCategories))
             .ReverseMap();
         CreateMap<Category, CreatedCategoryDto>().ReverseMap();
         CreateMap<Category, UpdatedCategoryDto>().ReverseMap();

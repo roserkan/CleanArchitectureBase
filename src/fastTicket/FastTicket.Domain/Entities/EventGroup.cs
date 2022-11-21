@@ -12,6 +12,8 @@ public class EventGroup : Entity
     public string OfficalWebSiteUrl { get; set; }
     public string ImagePath { get; set; }
     public string Description { get; set; }
+    public Guid CategoryId { get; set; }
+    public virtual Category Category { get; set; }
     public virtual ICollection<Event> Events { get; set; }
 }
 

@@ -9,6 +9,7 @@ using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FastTicket.Application.Features.Auths.Rules;
 using FastTicket.Application.Features.Categories.Rules;
+using FastTicket.Application.Features.Cities.Rules;
 using FastTicket.Application.Features.EventGroups.Rules;
 using FastTicket.Application.Features.Events.Rules;
 using FastTicket.Application.Features.OperationClaims.Rules;
@@ -53,6 +54,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<PerformanceBusinessRules>();
         services.AddScoped<TicketBusinessRules>();
         services.AddScoped<TicketCategoryBusinessRules>();
+        services.AddScoped<CityBusinessRules>();
 
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

@@ -40,25 +40,6 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventGroups",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OfficalWebSiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventGroups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OperationClaims",
                 schema: "dbo",
                 columns: table => new
@@ -91,6 +72,33 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EventGroups",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OfficalWebSiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventGroups_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalSchema: "dbo",
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 schema: "dbo",
                 columns: table => new
@@ -112,7 +120,7 @@ namespace FastTicket.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Venue",
+                name: "Venues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -126,9 +134,9 @@ namespace FastTicket.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Venue", x => x.Id);
+                    table.PrimaryKey("PK_Venues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Venue_Cities_CityId",
+                        name: "FK_Venues_Cities_CityId",
                         column: x => x.CityId,
                         principalSchema: "dbo",
                         principalTable: "Cities",
@@ -250,22 +258,29 @@ namespace FastTicket.Persistence.Migrations
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rules = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    EventGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Events_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalSchema: "dbo",
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Events_EventGroups_EventGroupId",
                         column: x => x.EventGroupId,
                         principalSchema: "dbo",
                         principalTable: "EventGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Events_Venue_VenueId",
+                        name: "FK_Events_Venues_VenueId",
                         column: x => x.VenueId,
-                        principalTable: "Venue",
+                        principalTable: "Venues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -340,6 +355,18 @@ namespace FastTicket.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventGroups_CategoryId",
+                schema: "dbo",
+                table: "EventGroups",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_CategoryId",
+                schema: "dbo",
+                table: "Events",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_EventGroupId",
                 schema: "dbo",
                 table: "Events",
@@ -401,8 +428,8 @@ namespace FastTicket.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Venue_CityId",
-                table: "Venue",
+                name: "IX_Venues_CityId",
+                table: "Venues",
                 column: "CityId");
         }
 
@@ -437,10 +464,6 @@ namespace FastTicket.Persistence.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Categories",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "Tickets",
                 schema: "dbo");
 
@@ -461,7 +484,11 @@ namespace FastTicket.Persistence.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Venue");
+                name: "Venues");
+
+            migrationBuilder.DropTable(
+                name: "Categories",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Cities",
